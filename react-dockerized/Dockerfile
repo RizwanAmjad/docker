@@ -1,11 +1,18 @@
 FROM node:lts-alpine3.16
 
+RUN addgroup app && adduser -S -G app app
+
+RUN mkdir /app && chown app /app
+
+USER app
+
 WORKDIR /app
-COPY package*.json ./
+
+COPY --chown=app:app package*.json ./
 
 RUN npm install
 
-COPY ./ ./
+COPY --chown=app:app ./ ./
 
 EXPOSE 3000/tcp
 
